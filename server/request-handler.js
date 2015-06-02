@@ -1,4 +1,6 @@
-var fs = require('fs');
+var url = require("url");
+var path = require("path");
+var fs = require("fs");
 
 /*************************************************************
 
@@ -15,6 +17,19 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 
 var requestHandler = function(request, response) {
+
+  var uri = url.parse(request.url).pathname;
+
+
+  var contentTypesByExtension = {
+     ".html": "text/html",
+     ".css":  "text/css",
+     ".js":   "text/javascript"
+   };
+
+  // if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+
+
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -48,11 +63,22 @@ var requestHandler = function(request, response) {
   else if (request.method === "GET") {
 
     if (request.url === "/" || request.url === "/index.html" ) {
-      statusCode = 200;
-      response.writeHead(statusCode, headers);
-      endResponse = JSON.stringify({results: messages});
-      response.end(endResponse);
+      fs.readFile('/Users/student/2015-05-chatterbox-server/client/index.html', function(err, data){
+        if (err){
+          console.log(err);
+        }
+        else {
+          statusCode = 200;
+          response.writeHead(statusCode, headers);
+          response.write(data);
+          response.end();
+        }
+      });
+      console.log('this should only get selected on page load')
+      // endResponse = JSON.stringify({results: messages});
+      // response.end(endResponse);
     } else if (request.url === "/classes/messages" || request.url === "/classes/room1") {
+      console.log('this should on send and fetch')
       statusCode = 200;
       response.writeHead(statusCode, headers);
       endResponse = JSON.stringify({results: messages});

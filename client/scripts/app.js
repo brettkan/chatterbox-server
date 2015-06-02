@@ -33,7 +33,7 @@ App.prototype.init = function(){
 App.prototype.send = function(message){
     var that = this;
     $.ajax({
-      url: this.server,
+      url: this.server + 'classes/messages',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
@@ -51,7 +51,7 @@ App.prototype.fetch = function(){
 
     var that = this;
     $.ajax({
-      url: this.server,
+      url: this.server + 'classes/messages',
       type: 'GET',
       contentType: 'application/json',
       data: '',
