@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -30,18 +32,29 @@ var requestHandler = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
 
   // // The outgoing status.
-  var statusCode;
+  var statusCode = 200;
   var endResponse;
 
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = "text/html";
   // if (request.url !== "/classes/messages") {
   //   statusCode = 404;
   // }
 
-  if (request.method === "GET") {
+  if (request.method === "OPTIONS") {
+    response.writeHead(statusCode, headers);
+    response.end();
+  }
+  else if (request.method === "GET") {
 
     if (request.url === "/" || request.url === "/index.html" ) {
-      statusCode = 200;
-      endResponse = "./index.html";
+      // fs.readFile('client/index.html', function(err, data) {
+        // console.log(data);
+        response.writeHead(statusCode, headers);
+        // response.write(data);
+        response.end();
+
+      // });
     } else if (request.url === "/classes/messages" || request.url === "/classes/room1") {
       statusCode = 200;
       endResponse = JSON.stringify({results: messages});
@@ -78,17 +91,17 @@ var requestHandler = function(request, response) {
 
 
   // See the note below about CORS headers.
-  var headers = defaultCorsHeaders;
 
   // Tell the client we are sending them plain text.
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = "application/json";
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-  response.writeHead(statusCode, headers);
+
+  // response.writeHead(statusCode, headers);
+
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
@@ -96,7 +109,8 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(endResponse);
+
+  // response.end(endResponse);
 };
 
 var messages = [];

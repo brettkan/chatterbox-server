@@ -1,0 +1,79 @@
+body {
+    background: #eee;
+    text-align: center;
+    padding: 0 25px;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+#main {
+    width: 500px;
+    margin: auto;
+    text-align: left;
+    background: white;
+    padding: 50px 60px;
+    border: solid #ddd;
+    border-width: 0 1px 1px 1px;
+}
+
+#main h1 {
+    margin-top: 0;
+    font-size: 35px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+
+#main ul {
+    padding-left: 20px;
+}
+
+#main .error {
+    border: 1px solid red;
+    background: #FDEFF0;
+    padding: 20px;
+}
+
+#main .success {
+    margin-top: 25px;
+}
+
+#main .success code {
+    font-size: 12px;
+    color: green;
+    line-height: 13px;
+}
+
+form {
+    width: 100%;
+}
+
+input[type=text], textarea, button, select {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    margin-bottom: 16px;
+}
+button {
+    background-color: silver;
+    color: white;
+}
+
+input[type=text], textarea, select {
+    background-color: white;
+    color: grey;
+    border: 1px solid silver;
+}
+
+form button {
+    cursor: pointer;
+}
+
+.message {
+    border: 1px solid silver;
+    padding:16px;
+    margin-bottom: 16px;
+}
+.username {
+    font-weight: bold;
+}
