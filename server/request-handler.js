@@ -29,18 +29,29 @@ var requestHandler = function(request, response) {
   // console.logs in your code.
   console.log("Serving request type " + request.method + " for url " + request.url);
 
-  // The outgoing status.
-  var statusCode = 200;
+  // // The outgoing status.
+  var statusCode;
+  var endResponse;
 
-  // console.log(request.headers);
+  // if (request.url !== "/classes/messages") {
+  //   statusCode = 404;
+  // }
+
   if (request.method === "GET") {
-    // var latestMessages = [];
-    // for (var i = messages.results.length - 1; i >= 0 ; i--) {
-    //   latestMessages.push(messages.results[i]);
-    // }
-  }
 
-  if (request.method === "POST") {
+    if (request.url === "/" || request.url === "/index.html" ) {
+      statusCode = 200;
+      endResponse = "./index.html";
+    } else if (request.url === "/classes/messages" || request.url === "/classes/room1") {
+      statusCode = 200;
+      endResponse = JSON.stringify({results: messages});
+    } else {
+      statusCode = 404;
+      endResponse = null;
+    }
+
+  } else if (request.method === "POST") {
+
     statusCode = 201;
 
     // for (var key in request) {
@@ -58,6 +69,8 @@ var requestHandler = function(request, response) {
     request.on("end", function(){
       messages.push(requestBody);
     });
+
+    endResponse = JSON.stringify({results: messages});
   }
 
 
@@ -83,7 +96,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(JSON.stringify({results: messages}));
+  response.end(endResponse);
 };
 
 var messages = [];
