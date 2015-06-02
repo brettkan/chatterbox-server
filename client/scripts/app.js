@@ -1,7 +1,7 @@
 
 var App = function(server){
 this.server = server;
-var room;
+this.room = 'defaultRoom';
 
 }
 App.prototype.init = function(){
@@ -9,14 +9,13 @@ App.prototype.init = function(){
     that.fetch();
 
     $('form.messageBoxForm').on('submit', function(event){
-      var messageArray = $( this ).serializeArray();
       event.preventDefault();
-      var message = {};
-      for (var i in messageArray) {
-        message.username = messageArray[1].value;
-        message.text = messageArray[0].value;
-        message.roomname = that.room;
-      }
+      var message = {
+        username: $(this).find('input').val(),
+        text: $(this).find('textarea').val(),
+        roomname: $('.newRoom').val()
+      };
+
       that.send(message);
     });
     $('.roomCreation').on('submit', function(event){
@@ -55,8 +54,11 @@ App.prototype.fetch = function(){
       url: this.server,
       type: 'GET',
       contentType: 'application/json',
-      data: {order: '-createdAt'},
+      data: '',
       success: function (data) {
+        data = JSON.parse(data);
+        console.log(data);
+        console.log('chatterbox: Messages received');
         that.clearMessages();
         that.clearRooms();
         var rooms = {};
@@ -68,6 +70,7 @@ App.prototype.fetch = function(){
           that.addRoom(key);
         }
         $('.roomSelector option[value='+ that.room +']').prop('selected', true);
+        debugger;
         that.displayMessages(that.room, rooms);
       },
       error: function (data) {
@@ -126,5 +129,5 @@ $(document).ready(function(){
   var $msgList = $('.messageList');
    // console.log('ht;', $htmlMsg.html());
   app.init();
-  setInterval(app.fetch.bind(app), 5000);
+  // setInterval(app.fetch.bind(app), 5000);
 });

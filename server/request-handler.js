@@ -48,19 +48,19 @@ var requestHandler = function(request, response) {
   else if (request.method === "GET") {
 
     if (request.url === "/" || request.url === "/index.html" ) {
-      // fs.readFile('client/index.html', function(err, data) {
-        // console.log(data);
-        response.writeHead(statusCode, headers);
-        // response.write(data);
-        response.end();
-
-      // });
+      statusCode = 200;
+      response.writeHead(statusCode, headers);
+      endResponse = JSON.stringify({results: messages});
+      response.end(endResponse);
     } else if (request.url === "/classes/messages" || request.url === "/classes/room1") {
       statusCode = 200;
+      response.writeHead(statusCode, headers);
       endResponse = JSON.stringify({results: messages});
+      response.end(endResponse);
     } else {
       statusCode = 404;
-      endResponse = null;
+      endResponse;
+      response.end();
     }
 
   } else if (request.method === "POST") {
@@ -81,9 +81,13 @@ var requestHandler = function(request, response) {
 
     request.on("end", function(){
       messages.push(requestBody);
+      // console.log(messages);
     });
 
-    endResponse = JSON.stringify({results: messages});
+    response.writeHead(statusCode, headers);
+    var endResponse = JSON.stringify({results: messages});
+    response.end(endResponse);
+
   }
 
 
@@ -113,7 +117,7 @@ var requestHandler = function(request, response) {
   // response.end(endResponse);
 };
 
-var messages = [];
+var messages = [{username: 'defaultName', text: 'defaultText', roomname: 'defaultRoom'}];
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // This code allows this server to talk to websites that
