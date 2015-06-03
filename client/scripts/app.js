@@ -125,7 +125,8 @@ App.prototype.addFriend = function(){
 
 
 $(document).ready(function(){
-  var app = new App("http://127.0.0.1:3000/");
+  // var app = new App("http://127.0.0.1:3000/");
+  var app = new App("http://127.0.0.1:1337/");
   var $msgList = $('.messageList');
    // console.log('ht;', $htmlMsg.html());
   app.init();
